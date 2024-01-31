@@ -4,9 +4,9 @@ namespace WebChat.Models
 {
     public class ChatContext : DbContext
     {
-        public ChatContext(DbContextOptions<ChatContext> options)
-          : base(options)
+        public ChatContext(DbContextOptions<ChatContext> options) : base(options)
         {
+
         }
 
         public DbSet<User> Users { get; set; }
@@ -26,10 +26,9 @@ namespace WebChat.Models
               .HasForeignKey(m => m.SenderId);
         }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        /*protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(
-              @"Server=(localdb)\mssqllocaldb;Database=MyDatabase;Trusted_Connection=True;");
-        }
+            optionsBuilder.UseNpgsql("DefaultConnection");
+        }*/
     }
 }

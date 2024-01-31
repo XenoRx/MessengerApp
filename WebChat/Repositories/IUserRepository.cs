@@ -10,7 +10,6 @@ namespace WebChat.Repositories
 
         Task AddUser(User user);
 
-        /* Task UpdateUser(int id, User user);*/
         Task UpdateUser(int id, UpdateUserModel model);
 
         Task DeleteUser(int id);

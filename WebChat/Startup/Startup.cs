@@ -5,15 +5,6 @@ namespace WebChat.Startup
 {
     public class Startup
     {
-        /*public void ConfigureServices(IServiceCollection services)
-        {
-            services.AddDbContext<ChatContext>();
-
-            services.AddScoped<IUserRepository, UserRepository>();
-            services.AddScoped<IMessageRepository, MessageRepository>();
-            services.AddScoped<UserService>();
-            services.AddScoped<MessageService>();
-        }*/
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -24,22 +15,20 @@ namespace WebChat.Startup
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddSingleton<ChatContext>(provider => provider.CreateScope().ServiceProvider.GetService<ChatContext>());
 
-            // Регистрация контекста данных
+            //Регистрация контекста данных
+            /*services.AddDbContext<ChatContext>(options =>
+            {
+                options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"));
+            });*/
             services.AddDbContext<ChatContext>(options =>
-               options.UseNpgsql(Configuration.GetConnectionString("PostgresConnection")));
+            {
+                options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"));
+            }, ServiceLifetime.Transient);
 
-            // Регистрация репозитория
             services.AddScoped<IMessageRepository, MessageRepository>();
         }
-
     }
-    /*public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-    {
-        app.UseEndpoints(endpoints =>
-        {
-            endpoints.MapControllers();
-        });
-    }*/
 }
 

@@ -25,11 +25,11 @@ namespace WebChat
 
             builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
 
-            builder.Host.ConfigureContainer<ContainerBuilder>(cb => cb.RegisterType<UserRepository>()
-                        .As<IUserRepository>());
-
-            builder.Host.ConfigureContainer<ContainerBuilder>(cb => cb.RegisterType<MessageRepository>()
-            .As<IMessageRepository>());
+            builder.Host.ConfigureContainer<ContainerBuilder>(cb =>
+            {
+                cb.RegisterType<UserRepository>().As<IUserRepository>();
+                cb.RegisterType<MessageRepository>().As<IMessageRepository>();
+            });
 
             var confBuilder = new ConfigurationBuilder();
             confBuilder.SetBasePath(Directory.GetCurrentDirectory());
