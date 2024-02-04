@@ -14,14 +14,11 @@ namespace WebChat.Startup
 
         public void ConfigureServices(IServiceCollection services)
         {
+            string stf = Configuration.GetConnectionString("DefaultConnection");
             services.AddControllers();
             services.AddSingleton<ChatContext>(provider => provider.CreateScope().ServiceProvider.GetService<ChatContext>());
 
             //Регистрация контекста данных
-            /*services.AddDbContext<ChatContext>(options =>
-            {
-                options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"));
-            });*/
             services.AddDbContext<ChatContext>(options =>
             {
                 options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"));

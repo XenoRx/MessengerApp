@@ -4,13 +4,18 @@ namespace WebChat.Models
 {
     public class ChatContext : DbContext
     {
-        public ChatContext(DbContextOptions<ChatContext> options) : base(options)
-        {
-
-        }
+        public ChatContext() { }
 
         public DbSet<User> Users { get; set; }
         public DbSet<Message> Messages { get; set; }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+
+
+            optionsBuilder.LogTo(Console.WriteLine)
+                .UseNpgsql("Server=localhost;Database=testdb2;Username=postgres;Password=disa123");
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -26,9 +31,5 @@ namespace WebChat.Models
               .HasForeignKey(m => m.SenderId);
         }
 
-        /*protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseNpgsql("DefaultConnection");
-        }*/
     }
 }
