@@ -53,11 +53,6 @@ namespace WebChat.Repositories
             var userIdClaim = tokenS.Claims.FirstOrDefault(x => x.Type == "id");
 
             return int.Parse(userIdClaim.Value);
-
-
-            /*            // вариант через сессию
-
-                        return (int)HttpContext.Session.GetInt32("UserId");*/
         }
     }
 }

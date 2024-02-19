@@ -1,25 +1,63 @@
-﻿namespace WebChat.UnitTests
+﻿using global::WebChat.Services;
+using Microsoft.AspNetCore.Mvc;
+using Moq;
+using NUnit.Framework;
+using NUnit.Framework.Legacy;
+using WebChat.Controllers;
+using WebChat.Models;
+using WebChat.Repositories;
+namespace WebChat.UnitTests
 {
-    /*[Fact]
-    public void Send_Should_Save_The_Message_To_The_Database()
+
+    namespace WebChat.Tests.Controllers
     {
-        // Arrange
-        var message = new Message()
+        [TestFixture]
+        public class MessagesControllerTests
         {
-            SenderId = 1,
-            RecipientId = 2,
-            Content = "This is a test message."
-        };
+            [Test]
+            public async Task GetMessages_ReturnsOkResultWithMessages()
+            {
+                // Arrange
+                int userId = 01;
+                var mockAuthService = new Mock<AuthenticationService>();
+                mockAuthService.Setup(auth => auth.GetCurrentUserId()).Returns(userId);
 
-        // Act
-        message.Send();
+                var mockMessageRepository = new Mock<IMessageRepository>();
+                var fakeMessages = new List<Message> { new Message(), new Message() };
+                mockMessageRepository.Setup(repo => repo.GetMessagesForUser(userId)).ReturnsAsync(fakeMessages);
 
-        // Assert
-        var savedMessage = db.Messages.FirstOrDefault(m => m.Id == message.Id);
-        Assert.NotNull(savedMessage);
-        Assert.Equal(message.SenderId, savedMessage.SenderId);
-        Assert.Equal(message.RecipientId, savedMessage.RecipientId);
-        Assert.Equal(message.Content, savedMessage.Content);
-    }*/
+                var controller = new MessagesController(mockMessageRepository.Object, mockAuthService.Object);
+
+                // Act
+                var result = await controller.GetMessages();
+
+                // Assert
+
+                ClassicAssert.IsInstanceOf<OkObjectResult>(result);
+                var okResult = result as OkObjectResult;
+                ClassicAssert.IsNotNull(okResult);
+
+                var messages = okResult.Value as List<Message>;
+                ClassicAssert.IsNotNull(messages);
+                ClassicAssert.AreEqual(fakeMessages.Count, messages.Count);
+            }
+
+            [Test]
+            public async Task SendMessage_ReturnsOkResult()
+            {
+                // Arrange
+                var mockAuthService = new Mock<AuthenticationService>();
+                var mockMessageRepository = new Mock<IMessageRepository>();
+                var controller = new MessagesController(mockMessageRepository.Object, mockAuthService.Object);
+
+                // Act
+                var result = await controller.SendMessage(new Message());
+
+                // Assert
+                ClassicAssert.IsInstanceOf<OkResult>(result);
+            }
+        }
+    }
 
 }
+
