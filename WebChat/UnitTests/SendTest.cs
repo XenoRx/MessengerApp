@@ -18,7 +18,7 @@ namespace WebChat.UnitTests
             public async Task GetMessages_ReturnsOkResultWithMessages()
             {
                 // Arrange
-                int userId = 01;
+                int userId = 1;
                 var mockAuthService = new Mock<AuthenticationService>();
                 mockAuthService.Setup(auth => auth.GetCurrentUserId()).Returns(userId);
 
